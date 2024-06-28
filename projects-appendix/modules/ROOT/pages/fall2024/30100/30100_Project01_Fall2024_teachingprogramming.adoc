@@ -114,7 +114,7 @@ scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 # scale the testing data
 X_test_scaled = scaler.transform(X_test)
-
+----
 [IMPORTANT]
 ====
 We use `fit_transform` on the training data and `transform` on the testing data. The fit_transform method simply runs the fit method and then the transform method.
@@ -129,22 +129,24 @@ The fit method calculates the mean and standard deviation of the data, while the
 === Question 5 (2 points)
 
 When deciding which model to use, it is important to consider different aspects of how we want the model to behave.
-Some examples of this are as follows:
-- Flexibility vs. Interpretability
-As model's become more flexible and able to handle complex data, they also become harder to interpret by becoming "black boxes".
+Some primary aspects of a model to consider are:
 
-- Classification vs. Regression
+- Flexibility vs. Interpretability:
+As model's become more flexible and able to handle complex data, they also become harder to interpret by becoming "black boxes".
+It is important to consider how much you value the interpretability of the model.
+
+- Classification vs. Regression:
 We have briefly touched on this in question 2, but it is important to understand the difference between classification and regression problems.
 Predicting housing prices, age, income, etc. would be regression problems, while predicting eye color, animal type, etc. would be a classification problem.
 
-- Prediction vs. Inference
-Predictive models focus on forecasting future data, while inferential models focus on understanding relationships between variables.
+- Prediction vs. Inference:
+A predictive model focuses on predicting future information, such as stock prices, while an inferential model focuses on understanding the relationships between variables.
 
-- Supervised vs. Unsupervised Learning
-Supervised learning uses labeled data to make predictions, while unsupervised learning uses unlabeled data to uncover patterns or structures within the data.
+- Supervised vs. Unsupervised Learning:
+Supervised learning uses a labeled dataset to make predictions, while unsupervised learning discovers patterns in the data without labels.
 
-- Parameterization vs. Non-Parameterization
-Parameterization involves assigning parameters to develop a function, while non-parameterization uses the data itself to derive the function parameters.
+- Parameterization vs. Non-Parameterization:
+Parameterization involves assigning parameters to help develop a function, where as non-parameterization uses the data itself to derive function parameters.
 
 .Deliverables
 ====
