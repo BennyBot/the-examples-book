@@ -17,6 +17,7 @@ In this project, we will learn how to select an appropriate machine learning mod
 === Question 1 (2 points)
 
 One of the most important parts of picking a model is understanding your data. This determines if your model will be regression or classification based.
+
 To explore this, we will use the boston dataset. Load it using the code below
 
 [source,python]
@@ -31,6 +32,7 @@ For this project, we will use the `MEDV` column as our output variable.
 
 Once we know what the output variable is, we should seperate it from the input features
 
+Run the following code to separate the input features from the output variable
 [source,python]
 ----
 # Split the dataset into features and target variable
@@ -39,8 +41,10 @@ y = my_df['MEDV']
 ----
 
 In order to evaluate how well the machine learning model is performing, we will split our dataset into training and testing sets.
+
 scikit-learn is a great python library for machine learning, and you will be using it all the time during these projects. It is recommended to read their documentation thoroughly.
 
+Run the following code to split the data into training and testing sets
 [source,python]
 ----
 from sklearn.model_selection import train_test_split
@@ -48,9 +52,11 @@ from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 ----
 
-Print the first few rows of the training data input features. You may notice that each feature may have a drastically different range.
+Print the first few rows of the training data input features. You may notice that each feature has a different range.
+
 This can cause problems for some machine learning models. In order to fix this, it is standard to scale the features before training.
-We can do this using the scikit-learn `StandardScaler`
+
+We can do this using scikit-learn's `StandardScaler` class. Run the following code.
 [source,python]
 ----
 from sklearn.preprocessing import StandardScaler
@@ -62,10 +68,11 @@ X_test_scaled = scaler.transform(X_test)
 ----
 
 You may notice that we used a different function for the training and testing data. There is a reason for it. 
-Please read https://scikit-learn.org/stable/modules/preprocessing.html#standardization-or-mean-removal-and-variance-scaling[this guide on standardization]
 
+Please read https://scikit-learn.org/stable/modules/preprocessing.html#standardization-or-mean-removal-and-variance-scaling[this guide on standardization] and https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler.fit_transform[the documentation] to figure out why.
 
 Deliverables
+
 .. Please explain why we used different functions for `X_train_scaled` and `X_test_scaled`.
 .. What type of data is is the MEDV column. Would a regression or classification model be more appropriate?
 
