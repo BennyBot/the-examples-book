@@ -13,13 +13,11 @@ In this project, we will learn how to select an appropriate machine learning mod
 
 == Questions
 
-
 === Question 1 (2 points)
 
-One of the most important parts of picking a model is understanding your data. This determines if your model will be regression or classification based.
+One of the most important parts of picking a model is understanding your data. 
 
-To explore this, we will use the boston dataset. Load it using the code below
-
+For this project, we will be using the boston dataset. Run the following code to load the dataset into a pandas DataFrame.
 [source,python]
 ----
 import pandas as pd
@@ -27,10 +25,26 @@ import pandas as pd
 my_df = pd.read_csv('/anvil/projects/tdm/data/boston.csv')
 ----
 
-The first step of choosing data for a ML model is choosing what our output variable should be.
-For this project, we will use the `MEDV` column as our output variable.
+Now that we have loaded the dataset, let's take a look at the dimensions of the dataset.
 
-Once we know what the output variable is, we should seperate it from the input features
+We can find the number of rows and columns in the dataset using the `shape` attribute of the DataFrame.
+[source,python]
+----
+my_df.shape
+----
+
+.Deliverables
+====
+- The number of rows and columns in the dataset
+====
+
+=== Question 2 (2 points)
+
+The first step of preprocessing data for a ML model is choosing what our output variable should be.
+
+The output variable(s) help determine if we should use a regression or classification model. Typically, if the output variable is continuous, we use a regression model. If the output variable is categorical, we use a classification model.
+
+For this project, we will use the `MEDV` column as our output variable.
 
 Run the following code to separate the input features from the output variable
 [source,python]
@@ -39,10 +53,34 @@ Run the following code to separate the input features from the output variable
 X = my_df.drop('MEDV', axis=1)   
 y = my_df['MEDV']
 ----
+[NOTE]
+====
+It is common convention to use `X` to represent the input features and `y` to represent the output variable. All example code in this and future projects will follow this convention.
+====
+
+Now that we have separated the input features and output variable, let's take a look at the first few rows of the output variable.
+
+[source,python]
+----
+y.head()
+----
+
+.Deliverables
+====
+- What type of data is the MEDV column? (is it a continuous or categorical variable?)
+====
+
+=== Question 3 (2 points)
 
 In order to evaluate how well the machine learning model is performing, we will split our dataset into training and testing sets.
+The training set will be used to train the machine learning model, while the testing model will be used after training in order to analyze how well the model performs.
 
-scikit-learn is a great python library for machine learning, and you will be using it all the time during these projects. It is recommended to read their documentation thoroughly.
+[IMPORTANT]
+====
+It is also common to split the data into training, validation, and testing sets. The validation set is used during training to help tune the hyperparameters of the model. For this project, we will only use training and testing sets.
+====
+
+scikit-learn is a great python library for machine learning, and you will be using it all the time during these projects. Reading through https://scikit-learn.org/stable/user_guide.html[their documentation] may help you.
 
 Run the following code to split the data into training and testing sets
 [source,python]
@@ -52,11 +90,22 @@ from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 ----
 
-Print the first few rows of the training data input features. You may notice that each feature has a different range.
+Print the first few rows of the training data input features using the 'head' method. You may notice that each feature has a different range.
 
-This can cause problems for some machine learning models. In order to fix this, it is standard to scale the features before training.
+.Deliverables
+====
+- Which feature has the largest range? Which feature has the smallest range?
+====
 
-We can do this using scikit-learn's `StandardScaler` class. Run the following code.
+=== Question 4 (2 points)
+
+As you saw in the previous question, the input features have different ranges. This can cause problems for some machine learning models.
+
+Some models will assign more importance to features with larger ranges, which can lead to incorrect predictions.
+
+To avoid this, we can scale the input features so that they all have the same range.
+
+We can do this using scikit-learn's https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html[StandardScaler] class. Run the following code.
 [source,python]
 ----
 from sklearn.preprocessing import StandardScaler
@@ -65,94 +114,43 @@ scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 # scale the testing data
 X_test_scaled = scaler.transform(X_test)
-----
 
-You may notice that we used a different function for the training and testing data. There is a reason for it. 
+[IMPORTANT]
+====
+We use `fit_transform` on the training data and `transform` on the testing data. The fit_transform method simply runs the fit method and then the transform method.
+The fit method calculates the mean and standard deviation of the data, while the transform method scales the data using the mean and standard deviation.
+====
 
-Please read https://scikit-learn.org/stable/modules/preprocessing.html#standardization-or-mean-removal-and-variance-scaling[this guide on standardization] and https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler.fit_transform[the documentation] to figure out why.
-
-Deliverables
-
-.. Please explain why we used different functions for `X_train_scaled` and `X_test_scaled`.
-.. What type of data is is the MEDV column? Would a regression or classification model be more appropriate?
-
-
-=== Question 2 (2 points)
-
-**Flexibility vs. Interpretability**
-
-Flexible models are used for complex and unstructured datasets more effectively, but they are usually considered as "black boxes"; their outputs are not easily explainable.
-
-Interpretable models' outputs are easily understood and provide insight into which features are responsible for the prediction.
-
-Please read https://www.baeldung.com/cs/ml-flexible-and-inflexible-models[this article] to learn more about flexibility, inflexibility, and interpretability.  
- 
-.. Please describe the main difference between flexible and interpretable models in your own words.
-.. Please read https://the-examples-book.com/starter-guides/data-science/data-modeling/choosing-model/flexibility-interpret[this Examples book page], and choose one model for each that are flexible or interpretable
-
- 
-
-
-=== Question 3 (2 points)
-
-
-**Classification vs. Regression**
-
-Classification is when we classify data into distinct groups such as eye color like blue or black, or animal types like dog or cat.
-
-Classification model will put existing data into different groups.
-
-A regression model will produce predicted future data as numeric values like income or age.
-
-For example: Logistic regression is for binary classification. A binary classification problem is one where the output can only be one of two possible values, usually true or false, 0 or 1, etc.
-
-In contrast, linear regression is for predicting a continuous target variable as numeric data, for example: predicting a house's price based on the house's features.
-
-
-.. Describe the main difference between classification problems and regression problems in your own words.
-.. Describe a situation where classification would be useful vs. regression and vice versa.
-  
-
-
-=== Question 4 (2 points)
-
-
-**Prediction vs. Inference**
-
-Predictive models focus on forecasting, like using historical house prices to predict future house prices.
-
-Inferential models focus on understanding relationships, like understanding underlying factors that impact house prices.
-
-Visit https://www.datascienceblog.net/post/commentary/inference-vs-prediction/[this link] to learn more on the comparison of prediction and inference.
-
- 
-.. Explain when you would use prediction versus inference in modeling and why, in your own words.
-
-
+.Deliverables
+====
+- Please explain why we only fit the scaler on the training data and not the testing data.
+====
 
 === Question 5 (2 points)
 
+When deciding which model to use, it is important to consider different aspects of how we want the model to behave.
+Some examples of this are as follows:
+- Flexibility vs. Interpretability
+As model's become more flexible and able to handle complex data, they also become harder to interpret by becoming "black boxes".
 
-**Supervised vs. Unsupervised Learning**
+- Classification vs. Regression
+We have briefly touched on this in question 2, but it is important to understand the difference between classification and regression problems.
+Predicting housing prices, age, income, etc. would be regression problems, while predicting eye color, animal type, etc. would be a classification problem.
 
-Supervised learning is when correct predictions are provided to the model; it allows the model to learn the mapping from inputs to the desired outputs, like using labeled data that has features and a labeled column to predict if an animal is a dog or a cat, and learning from the correct or incorrect predictions made.
+- Prediction vs. Inference
+Predictive models focus on forecasting future data, while inferential models focus on understanding relationships between variables.
 
-Unsupervised learning does not provide model with correct predictions, instead it provides incentive for the model to grow unstructured in the right direction; it uncovers patterns or structures within the data.
+- Supervised vs. Unsupervised Learning
+Supervised learning uses labeled data to make predictions, while unsupervised learning uses unlabeled data to uncover patterns or structures within the data.
 
-Please read https://domino.ai/blog/supervised-vs-unsupervised-learning[this article], which provides more comparison of supervised and unsupervised learning.
+- Parameterization vs. Non-Parameterization
+Parameterization involves assigning parameters to develop a function, while non-parameterization uses the data itself to derive the function parameters.
 
-
-**Parameterization vs. Non-Parameterization**
-
-Parameterization involves assigning parameters (starting values) to develop a function.
-
-Non-Parameterization uses the data itself to derive the function parameters instead of predefined parameters.
-
-Please read https://www.geeksforgeeks.org/difference-between-parametric-and-non-parametric-methods/[this article] for an in-depth look at the concepts of parameterization and non-parameterization.
-
-.. Use your own words to explain the difference between supervised and unsupervised learning with simple examples.
-.. Use your own words to describe the difference between Parametric models and non-parametric models.
-
+.Deliverables
+====
+- Is our dataset more suitable for a regression or classification model? Why?
+- Would our dataset be more suitable for supervised or unsupervised learning? Why?
+====
 
 Project 01 Assignment Checklist
 ====
