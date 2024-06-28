@@ -74,7 +74,7 @@ Please read https://scikit-learn.org/stable/modules/preprocessing.html#standardi
 Deliverables
 
 .. Please explain why we used different functions for `X_train_scaled` and `X_test_scaled`.
-.. What type of data is is the MEDV column. Would a regression or classification model be more appropriate?
+.. What type of data is is the MEDV column? Would a regression or classification model be more appropriate?
 
 
 === Question 2 (2 points)
